@@ -1,0 +1,36 @@
+# 机器学习Python项目依赖包
+# Machine Learning Python Project Dependencies
+#
+# 安装方法 / Installation:
+# pip install -r ml_requirements.txt
+#
+# 或者单独安装 / Or install individually:
+# pip install numpy pandas scikit-learn matplotlib seaborn
+
+# 核心数值计算库 - Core numerical computing
+numpy>=1.21.0
+
+# 数据处理库 - Data manipulation
+pandas>=1.3.0
+
+# 机器学习库 - Machine learning library
+scikit-learn>=1.0.0
+
+# 数据可视化库 - Data visualization
+matplotlib>=3.4.0
+seaborn>=0.11.0
+
+# 中文字体支持 - Chinese font support
+# 方案1：使用matplotlib内置字体配置
+# 方案2：安装中文字体包（推荐）
+# pip install matplotlib-fonttools
+# 或者手动配置系统字体
+# 可选：深度学习库 (如果需要更高级的神经网络)
+# Optional: Deep learning libraries (for advanced neural networks)
+tensorflow>=2.8.0
+torch>=1.10.0
+
+# 可选：Jupyter notebook支持
+# Optional: Jupyter notebook support
+# jupyter>=1.0.0
+# ipython>=7.0.0
