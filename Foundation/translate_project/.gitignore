@@ -106,14 +106,7 @@ dmypy.json
 .DS_Store
 
 # 项目特定文件
-*.pdf
-*.json
-translated.json
-test.json
-output.pdf
-output_origin.pdf
-input.pdf
-no_text.pdf
+
 
 # 日志文件
 *.log

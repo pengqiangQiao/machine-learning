@@ -1,0 +1,733 @@
+[
+  {
+    "page": 0,
+    "rect": [
+      560.1079711914062,
+      26.89198875427246,
+      564.0,
+      35.557987213134766
+    ],
+    "text": "1",
+    "size": 7.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      80.02996826171875,
+      51.02899932861328,
+      531.9739379882812,
+      108.74099731445312
+    ],
+    "text": "Towards a Robust Deep Neural Network in\nTexts: A Survey",
+    "size": 24.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      48.160980224609375,
+      120.18801879882812,
+      563.3408813476562,
+      134.323486328125
+    ],
+    "text": "Wenqi Wang \u2020\u00a7 , Run Wang \u2020\u00a7\u2217 , Lina Wang \u2020\u00a7\u2217 ,  Member, IEEE,  Zhibo Wang \u00a7 ,  Member, IEEE,  Aoshuang Ye \u2020\u00a7",
+    "size": 11.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      301.6549987792969,
+      181.82814025878906,
+      310.34539794921875,
+      192.78704833984375
+    ],
+    "text": "!",
+    "size": 10.958900451660156,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      47.99999237060547,
+      228.79202270507812,
+      300.00396728515625,
+      456.0639953613281
+    ],
+    "text": "Abstract \u2014Deep neural networks (DNNs) have achieved remarkable\nsuccess in various tasks ( e.g ., image classi\ufb01cation, speech recognition,\nand natural language processing (NLP)). However, researchers have\ndemonstrated that DNN-based models are vulnerable to adversarial\nexamples, which cause erroneous predictions by adding imperceptible\nperturbations into legitimate inputs. Recently, studies have revealed\nadversarial examples in the text domain, which could effectively evade\nvarious DNN-based text analyzers and further bring the threats of the\nproliferation of disinformation. In this paper, we give a comprehensive\nsurvey on the existing studies of adversarial techniques for generating\nadversarial texts written by both English and Chinese characters and\nthe corresponding defense methods. More importantly, we hope that our\nwork could inspire future studies to develop more robust DNN-based text\nanalyzers against known and unknown adversarial techniques.\nWe classify the existing adversarial techniques for crafting adversar-\nial texts based on the perturbation units, helping to better understand the\ngeneration of adversarial texts and build robust models for defense. In\npresenting the taxonomy of adversarial attacks and defenses in the text\ndomain, we introduce the adversarial techniques from the perspective\nof different NLP tasks. Finally, we discuss the existing challenges of ad-\nversarial attacks and defenses in texts and present the future research\ndirections in this emerging and challenging \ufb01eld.",
+    "size": 8.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      47.99999237060547,
+      467.3680114746094,
+      299.9989318847656,
+      487.6210021972656
+    ],
+    "text": "Index Terms \u2014Adversarial attacks and defenses, Adversarial texts, Ro-\nbustness, Deep neural networks, Natural language processing.",
+    "size": 8.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      48.27499771118164,
+      507.0149841308594,
+      139.82579040527344,
+      520.8309936523438
+    ],
+    "text": "1\nI NTRODUCTION",
+    "size": 11.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      47.999996185302734,
+      523.271484375,
+      299.99713134765625,
+      673.3984375
+    ],
+    "text": "Nowadays, deep neural networks (DNNs) have shown their\ngreat power in addressing masses of challenging problems\nin various areas, such as computer vision [1], [2], audio [3],\n[4], and natural language processing (NLP) [5], [6]. Due to\ntheir tremendous success, DNN-based systems are widely\ndeployed in the physical world, including many security-\ncritical areas [7]\u2013[11]. However, a series of studies [12], [13]\nhave found that crafted inputs by adding imperceptible per-\nturbations could easily fool DNNs. These modi\ufb01ed inputs\nare so-called adversarial examples, which bring potential\nsecurity threats to DNN-based systems even in the black-\nbox scenario where the target system is not available to\nattackers. For example, Figure 1 shows an adversarial attack",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      48.0,
+      679.8349609375,
+      300.0,
+      748.9744262695312
+    ],
+    "text": "\u2020  W. Wang, R. Wang, L. Wang, and A. Ye are with Key Laboratory of\nAerospace Information Security and Trusted Computing, Ministry of Edu-\ncation\n\u00a7  W. Wang, R. Wang, L. Wang, Z. Wang, and A. Ye are with School\nof Cyber Science and Engineering, Wuhan University, China. E-mail:\n{ wangwenqi 001, wangrun, lnwang, zbwang, yasfrost } @whu.edu.cn\n\u2217 Run Wang and Lina Wang are the corresponding authors.",
+    "size": 8.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      368.8551940917969,
+      236.14971923828125,
+      421.18194580078125,
+      244.3184051513672
+    ],
+    "text": "  Sentiment Analysis ",
+    "size": 6.123462200164795,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      318.89215087890625,
+      246.53076171875,
+      415.33245849609375,
+      269.3866271972656
+    ],
+    "text": "A inspire movie. It is entire of feelings \nand wonderful behaving. I could have \nsat through it a seconds period.",
+    "size": 6.123462200164795,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      420.7095642089844,
+      254.9777374267578,
+      436.4731140136719,
+      261.234375
+    ],
+    "text": "Analyze",
+    "size": 4.690131187438965,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      326.35565185546875,
+      314.3028869628906,
+      343.8478088378906,
+      328.1851501464844
+    ],
+    "text": "Positive\n64.30%",
+    "size": 5.512812614440918,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      364.79437255859375,
+      313.54803466796875,
+      381.6162414550781,
+      327.4303283691406
+    ],
+    "text": "Neutral\n16.00%",
+    "size": 5.512812614440918,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      401.433349609375,
+      313.61590576171875,
+      420.97076416015625,
+      320.9700012207031
+    ],
+    "text": "Negative",
+    "size": 5.512812614440918,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      402.85821533203125,
+      320.1553955078125,
+      419.6800842285156,
+      327.4981689453125
+    ],
+    "text": "19.70%",
+    "size": 5.504331588745117,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      345.5589904785156,
+      336.0369873046875,
+      407.10302734375,
+      345.8450012207031
+    ],
+    "text": "(a) original input",
+    "size": 8.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      497.25396728515625,
+      236.4062957763672,
+      549.5752563476562,
+      244.5636749267578
+    ],
+    "text": "  Sentiment Analysis ",
+    "size": 6.114981174468994,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      447.5521545410156,
+      246.6482696533203,
+      540.9591674804688,
+      269.4884033203125
+    ],
+    "text": "A  touch  movie. It is entire of feelings \nand  good  behaving. I could have sat \nthrough it a seconds period.",
+    "size": 6.114981174468994,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      549.0404663085938,
+      255.5612335205078,
+      564.7477416992188,
+      261.81787109375
+    ],
+    "text": "Analyze",
+    "size": 4.690131187438965,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      447.06024169921875,
+      314.42205810546875,
+      464.6080322265625,
+      328.28692626953125
+    ],
+    "text": "Positive\n26.50%",
+    "size": 5.504331588745117,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      482.9681396484375,
+      314.42205810546875,
+      499.78662109375,
+      328.28692626953125
+    ],
+    "text": "Neutral\n25.10%",
+    "size": 5.504331588745117,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      522.137939453125,
+      313.7350769042969,
+      541.7168579101562,
+      321.0778503417969
+    ],
+    "text": "Negative",
+    "size": 5.504331588745117,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      523.569580078125,
+      320.2571716308594,
+      540.3846435546875,
+      327.5999450683594
+    ],
+    "text": "48.40%",
+    "size": 5.504331588745117,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      471.0350036621094,
+      336.0369873046875,
+      538.9468994140625,
+      345.8450012207031
+    ],
+    "text": "(b) adversarial text",
+    "size": 8.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      311.9999694824219,
+      358.5924987792969,
+      564.00048828125,
+      474.3085632324219
+    ],
+    "text": "Fig. 1: Instance of an adversarial attack on the popular text\nanalysis system, ParallelDots. ParallelDots provides a series\nof APIs for various NLP tasks ( e.g ., sentiment analysis)\nthat have achieved state-of-the-art (SOTA) performance.\nWe employ a popular adversarial technique based on the\ngenetic algorithm [14] to craft adversarial texts and evade\nthe ParallelDots. We can \ufb01nd that the text is predicted as\nnegative in high con\ufb01dence when the words  inspire  and\nwonderful  in the original input are simply replaced by  touch\nand  good , respectively.",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      312.0,
+      495.4455871582031,
+      564.0010375976562,
+      726.3925170898438
+    ],
+    "text": "on the physical sentiment analysis system named Parallel-\nDots 1 . In this case, we cannot obtain any knowledge of the\nsystem architecture, model parameters, and training data.\nHowever, it fails to distinguish the adversarial example\ncorrectly and output erroneous results. In \ufb01ghting against\nthe threats of adversarial examples, researchers have con-\nducted numerous works on attacks and defenses, leading\nto a dramatic increase in both theory and application tech-\nniques, varying from images to texts. Here, we focus on\nthe adversarial examples in the text domain rather than the\nwell-investigated image domain.\nIn NLP, DNNs are widely employed in many fundamen-\ntal tasks ( e.g ., text classi\ufb01cation, natural language inference,\nand machine translation). Unfortunately, these DNN-based\nsystems suffer obvious performance degradation in facing\nadversarial examples. Papernot  et al . [15] \ufb01rst found that\nattackers could generate adversarial examples by adding\nimperceptible noises into texts, which would induce clas-\nsi\ufb01ers to produce incorrect results. Then, an arms race starts\nin the text domain battleground, resulting in the exposure",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      320.0000305175781,
+      736.6320190429688,
+      440.5520935058594,
+      746.4400024414062
+    ],
+    "text": "1. https://www.paralleldots.com",
+    "size": 8.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 0,
+    "rect": [
+      10.940000534057617,
+      212.260009765625,
+      37.619998931884766,
+      560.0
+    ],
+    "text": "arXiv:1902.07285v6  [cs.CL]  21 Apr 2021",
+    "size": 20.0,
+    "color": [
+      0.5686274509803921,
+      0.5686274509803921,
+      0.5686274509803921
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      560.1079711914062,
+      26.89198875427246,
+      564.0,
+      35.557987213134766
+    ],
+    "text": "2",
+    "size": 7.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      63.99100112915039,
+      149.09100341796875,
+      160.67103576660156,
+      158.89901733398438
+    ],
+    "text": "(a) publications in all areas",
+    "size": 8.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      198.72300720214844,
+      149.09100341796875,
+      283.2590026855469,
+      158.89901733398438
+    ],
+    "text": "(b) publications in texts",
+    "size": 8.0,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      48.0,
+      171.646484375,
+      299.99957275390625,
+      229.45339965820312
+    ],
+    "text": "Fig. 2: Publications of adversarial examples. Figure 2(a)\nshows the number of publications in the \ufb01eld of adversarial\nexample, which is collected by Carlini [25], covering a wide\nrange such as image, audio, text,  etc .. Figure 2(b) represents\nthe number of publications in the adversarial text domain.",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      48.0,
+      250.56341552734375,
+      299.99713134765625,
+      746.864501953125
+    ],
+    "text": "of studies in this emerging \ufb01eld. Most of the adversarial\nattacks in texts focus on speci\ufb01c NLP tasks [16]\u2013[19], which\nwill bring potential security concerns to our users. For\ninstance, in the real world, when booking food online,\nusers tend to search for nearby recommended restaurants in\nmobile apps and read reviews of their products. The service\nproviders [20]\u2013[22] will give suggestions according to the\nposted comments via various techniques like sentiment\nanalysis [23]. However, these DNN-based text analyzers\ncould be easily fooled by adversarial examples. Attackers\ncan interfere with product ratings by posting adversarial\ntexts. More seriously, attackers can maliciously propagate\ndisinformation via adversarial texts to reap pro\ufb01ts and cause\npro\ufb01t losses to consumers. Thus, effective defense methods\nneed to be devised, and robust models should be developed\nfor the community.\nFor defense, countermeasures have been proposed to\nenhance the robustness of DNN-based text analyzers. Nev-\nertheless, they are obviously not prepared for the emerging\nthreats of adversarial examples, so that continuous efforts\nshould be taken further. Figure 2 shows us the publica-\ntions of adversarial examples in recent years, and it reveals\nthat numerous studies are developing various adversarial\ntechniques which pose challenges to defense. At present,\nadversarial texts detection [24] and model enhancement [13]\nare two mainstream ideas in \ufb01ghting against the threats\nof adversarial texts, but both of them exhibit obvious\nweakness. For instance, adversarial text detection is only\nsuitable for certain adversarial attacks. Model enhancement\nlike adversarial training suffers the shortcoming in distin-\nguishing adversarial texts generated by unknown adversar-\nial techniques. In summary, tackling unknown adversarial\ntechniques, generalized to different languages, and effective\nto a wide range of NLP tasks are the three obstacles for\nthe existing defense methods. To bridge this striking gap,\nit is urgent to inspire researchers to invest in the study of\nadversarial attacks and defenses in the text domain. Thus, a\ncomprehensive survey is needed to present the preliminary\nknowledge and introduce the challenges of this \ufb01eld.\nIn adversarial attacks and defenses, several surveys fo-\ncus on the image domain [26]\u2013[31], but few in texts [32]\u2013[34].\nHere, we introduce these three surveys in texts and list the\ndifferences between them.",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      322.1679992675781,
+      42.818538665771484,
+      564.0029907226562,
+      100.62545013427734
+    ],
+    "text": "\u2022  In 03/2019, Belinkov  et al . [32] mainly focused on the\ninterpretability of machine learning in NLP. They only\nreview some attacks to understanding these models\u2019\nfailure, but their work lacks surveying the defense\nmethods against adversarial attacks.",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      322.1679992675781,
+      100.5184326171875,
+      564.0025024414062,
+      204.48526000976562
+    ],
+    "text": "\u2022  In 03/2020, Xu  et al . [33] systematically reviewed\ncutting-edge algorithms in the \ufb01eld of images, graphics,\nand texts. For adversarial attacks in texts, they only de-\nscribe some methods according to different NLP tasks,\nbut they do not analyze which kind of attack is suitable\nfor the task, nor do they compare the similarities and\ndifferences between these methods. Meanwhile, the\nauthors also do not pay attention to the defense in the\ntext domain.",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      322.1679992675781,
+      204.37823486328125,
+      563.9989624023438,
+      354.71417236328125
+    ],
+    "text": "\u2022  In 04/2020, Zhang  et al . [34] mainly compared attack\nmethods in the image domain and described how\nadversarial attacks were implemented in texts. They\ndivide adversarial attacks into black-box and white-box\nattacks, just like in the image domain. However, this\nclassi\ufb01cation method does not re\ufb02ect how to generate\nadversarial examples in NLP. Due to the difference\nbetween texts and images, adversarial examples can be\nclassi\ufb01ed as char-level, word-level, sentence-level, and\nmulti-level attacks according to the perturbation units\nin texts. Besides, the specially designed defense method\n( i.e ., spelling-check) in NLP is not introduced in their\ndefense  section.",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      322.16802978515625,
+      354.398193359375,
+      564.0025634765625,
+      423.7452392578125
+    ],
+    "text": "\u2022  In addition, all of them lack some important guide-\nlines such as the difference between Chinese-based and\nEnglish-based adversarial examples, interpretability of\nadversarial examples, and combination with other in-\nteresting works ( e.g ., adding adversarial perturbations\ninto deepfake texts to fool deepfake detectors [35]\u2013[37]).",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      312.00006103515625,
+      429.4082336425781,
+      563.9972534179688,
+      510.2952880859375
+    ],
+    "text": "In this paper, we review the studies of adversarial ex-\namples in the text domain with the goal to build robust\nDNN-based text analyzers by understanding the generation\nof adversarial texts, the weakness and strengths of existing\ndefense methods, and the adversarial techniques for differ-\nent NLP tasks. The advances of our work are summarized\nas follows.",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      322.1680603027344,
+      515.958251953125,
+      563.9971313476562,
+      573.7652587890625
+    ],
+    "text": "\u2022  We review not only adversarial attacks and defenses\nin the text domain, but also interpretation, impercep-\ntibility, and certi\ufb01cation works. Our systematic and\ncomprehensive review helps newcomers to understand\nthis research \ufb01led.",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      322.1680603027344,
+      573.6582641601562,
+      563.9972534179688,
+      643.0051879882812
+    ],
+    "text": "\u2022  The prior three surveys only focus on works related to\nEnglish-based models, and neither of them reviews the\nefforts of evaluating the robustness of Chinese-based\nmodels. We bridge this gap and analyze the differences\nof adversarial examples between English-based and\nChinese-based models.",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      322.1680603027344,
+      642.898193359375,
+      564.0025634765625,
+      735.3251953125
+    ],
+    "text": "\u2022  We classify the adversarial texts into  char-level ,  word-\nlevel ,  sentence-level , and  multi-level  according to the per-\nturbation units in generating adversarial texts. Addi-\ntionally, we focus on the adversarial attacks for the\ndifferent NLP tasks. We hope this could inspire future\nresearchers to understand the generation of adversarial\ntexts and further develop general and effective defense\nmethods for these NLP tasks.",
+    "size": 9.5,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  },
+  {
+    "page": 1,
+    "rect": [
+      322.1681213378906,
+      735.2182006835938,
+      563.9971923828125,
+      750.8087768554688
+    ],
+    "text": "\u2022  We combine adversarial examples with model analysis",
+    "size": 6.973800182342529,
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "fontname": "Helvetica"
+  }
+]
