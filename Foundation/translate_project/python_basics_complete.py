@@ -6,6 +6,7 @@ Complete Python Basics Tutorial for Java Programmers
 """
 
 import math
+import os  # 新增：用于文件清理操作
 
 
 # ============================================================
@@ -509,23 +510,30 @@ def demo_file():
     print("12. 文件操作")
     print("=" * 60)
     
+    filename = "test_python.txt"
+
     # 写文件
     # Java: FileWriter writer = new FileWriter("test.txt");
-    with open("test_python.txt", "w", encoding="utf-8") as f:
+    with open(filename, "w", encoding="utf-8") as f:
         f.write("Hello Python\n")
         f.write("第二行\n")
     print("文件已写入")
     
     # 读文件
     # Java: BufferedReader reader = new BufferedReader(new FileReader("test.txt"));
-    with open("test_python.txt", "r", encoding="utf-8") as f:
+    with open(filename, "r", encoding="utf-8") as f:
         content = f.read()
         print(f"文件内容:\n{content}")
     
     # 按行读取
-    with open("test_python.txt", "r", encoding="utf-8") as f:
+    with open(filename, "r", encoding="utf-8") as f:
         for line in f:
             print(f"行: {line.strip()}")
+
+    # 清理文件（最佳实践）
+    if os.path.exists(filename):
+        os.remove(filename)
+        print("测试文件已清理")
 
 
 # ============================================================
@@ -578,6 +586,77 @@ def demo_builtin():
 
 
 # ============================================================
+# 14. 类型提示 (Type Hints)
+# ============================================================
+
+def demo_type_hints():
+    """类型提示 - Python 3.5+ (让Java程序员感到亲切)"""
+    print("\n" + "=" * 60)
+    print("14. 类型提示 (Type Hints)")
+    print("=" * 60)
+
+    # Java: public String greeting(String name) { return "Hello " + name; }
+    # Python (并不强制，但IDE会利用它进行提示):
+    def greeting(name: str) -> str:
+        return f"Hello, {name}"
+
+    print(greeting("Java Developer"))
+
+    # 复杂类型 (在Python 3.9+可以直接用 list, dict 等，旧版本需从typing引入)
+    from typing import List, Dict, Union, Optional
+
+    # Java: public void processItems(List<Integer> items)
+    def process_items(items: List[int]) -> None:
+        for item in items:
+            print(item, end=" ")
+    print("处理列表:", end=" ")
+    process_items([1, 2, 3])
+    print()
+
+    # Java: public Map<String, Integer> getScores()
+    def get_scores() -> Dict[str, int]:
+        return {"Alice": 95, "Bob": 88}
+    print(f"字典类型提示: {get_scores()}")
+
+    # Java: Optional<String>
+    def find_user(user_id: int) -> Optional[str]:
+        return "Admin" if user_id == 1 else None
+
+    user = find_user(1)
+    if user:
+        print(f"找到用户: {user}")
+
+
+# ============================================================
+# 15. 装饰器 (Decorators)
+# ============================================================
+
+def demo_decorators():
+    """装饰器 - 类似Java注解结合AOP，但更灵活"""
+    print("\n" + "=" * 60)
+    print("15. 装饰器 (Decorators)")
+    print("=" * 60)
+
+    # 定义一个简单的日志装饰器
+    # 类似于Java Spring中的 @LogExecutionTime AOP切面
+    def my_logger(func):
+        def wrapper(*args, **kwargs):
+            print(f"[Log] 开始执行函数: {func.__name__}")
+            result = func(*args, **kwargs)
+            print(f"[Log] 函数执行结束")
+            return result
+        return wrapper
+
+    # 使用装饰器 (@语法糖)
+    @my_logger
+    def calculate_add(a, b):
+        return a + b
+
+    # 调用函数时会自动执行装饰器逻辑
+    print(f"计算结果: {calculate_add(5, 10)}")
+
+
+# ============================================================
 # 主函数
 # ============================================================
 
@@ -600,7 +679,9 @@ def main():
     demo_exception()
     demo_file()
     demo_builtin()
-    
+    demo_type_hints()  # 新增
+    demo_decorators()  # 新增
+
     print("\n" + "=" * 60)
     print("教程完成！")
     print("=" * 60)
