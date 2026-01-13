@@ -1,121 +1,134 @@
-import torch
-from datasets import load_dataset
+# train_qwen_scale.py
+import os
+import argparse
+import json
+from datasets import Dataset
 from transformers import (
-    AutoModelForCausalLM,
     AutoTokenizer,
-    BitsAndBytesConfig,
+    AutoModelForCausalLM,
     TrainingArguments,
+    Trainer,
+    DataCollatorForSeq2Seq
 )
-from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from trl import SFTTrainer
+from peft import LoraConfig, get_peft_model, TaskType
+import torch
 
-# ====================== 关键修改：数据集名称 ======================
-model_name = "qwen/Qwen-7B-Chat-Int4"
-dataset_name = "AI-ModelScope/alpaca-data-gpt4-chinese"  # 改为你指定的数据集
-new_model = "qwen-7b-alpaca-lora"
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--num_samples", type=int, required=True)
+    parser.add_argument("--output_dir", type=str, required=True)
+    args = parser.parse_args()
 
-# 1. 加载数据集（魔搭源，自动下载）
-print("正在加载数据集...")
-# 加载训练集，可指定split="train[:10%]"先跑10%数据测试
-dataset = load_dataset(dataset_name, split="train")
-# 查看单条数据，确认格式（新手必做）
-print("数据集示例：", dataset[0])
+    LOCAL_MODEL_PATH = "/root/.cache/modelscope/hub/models/Qwen/Qwen-1_8B-Chat"
+    LOCAL_DATA_PATH = "/root/autodl-tmp/firefly/firefly-train-1.1M.jsonl"
 
-# 2. 4-bit量化配置（适配4090单卡）
-bnb_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_quant_type="nf4",  # 最优4bit量化方式
-    bnb_4bit_compute_dtype=torch.float16,
-    bnb_4bit_use_double_quant=True,  # 二次量化，进一步降显存
-)
-
-# 3. 加载Qwen模型和Tokenizer
-print("正在加载模型...")
-model = AutoModelForCausalLM.from_pretrained(
-    model_name,
-    quantization_config=bnb_config,
-    device_map="auto",  # 自动分配到4090
-    trust_remote_code=True,  # Qwen必须加
-)
-model.config.use_cache = False  # 训练时关闭缓存，避免报错
-model.config.pretraining_tp = 1
-
-tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-tokenizer.pad_token = tokenizer.eos_token  # Qwen默认无pad_token，用eos_token替代
-tokenizer.padding_side = "right"  # 右填充，避免推理时警告
-
-# 4. 准备模型用于k-bit训练
-model = prepare_model_for_kbit_training(model)
-
-# 5. LoRA配置（平衡效果和显存）
-peft_config = LoraConfig(
-    r=32,  # 4090单卡建议32，比64显存占用低，效果也够用
-    lora_alpha=64,
-    lora_dropout=0.05,
-    bias="none",
-    task_type="CAUSAL_LM",
-    target_modules=["c_attn", "c_proj"],  # Qwen-7B的核心LoRA模块
-)
-model = get_peft_model(model, peft_config)
-# 打印可训练参数（仅占总参数0.2%左右，显存友好）
-print("可训练参数占比：")
-model.print_trainable_parameters()
-
-
-# 6. 核心：Alpaca数据转Qwen格式（无需修改）
-def formatting_func(example):
-    instruction = example["instruction"]
-    input_text = example.get("input", "").strip()
-    output_text = example["output"].strip()
-
-    # 组合用户输入
-    if input_text:
-        user_prompt = f"以下是任务的说明：{instruction}\n以下是任务的输入：{input_text}"
-    else:
-        user_prompt = f"以下是任务的说明：{instruction}"
-
-    # Qwen官方Chat格式（必须严格遵循）
-    formatted_text = (
-        f"<|im_start|>system\n你是一个专业、乐于助人的AI助手。<|im_end|>"
-        f"<|im_start|>user\n{user_prompt}<|im_end|>"
-        f"<|im_start|>assistant\n{output_text}<|im_end|>"
+    # === Tokenizer ===
+    tokenizer = AutoTokenizer.from_pretrained(
+        LOCAL_MODEL_PATH,
+        trust_remote_code=True,
+        padding_side='right'
     )
-    return {"text": formatted_text}
+    IM_END_ID = 151645
+    IM_START_ID = 151643
+    tokenizer.pad_token_id = IM_END_ID
+    tokenizer.eos_token_id = IM_END_ID
+    tokenizer.bos_token_id = IM_START_ID
+    tokenizer.pad_token = "<|im_end|>"
+    tokenizer.eos_token = "<|im_end|>"
+    tokenizer.bos_token = "<|im_start|>"
 
+    print(f"✅ pad_token_id: {tokenizer.pad_token_id}")
+    print(f"✅ eos_token_id: {tokenizer.eos_token_id}")
 
-# 7. 训练参数（4090单卡最优配置）
-training_args = TrainingArguments(
-    output_dir="./qwen-finetune-results",  # 结果保存路径
-    num_train_epochs=2,  # 2轮足够，避免过拟合
-    per_device_train_batch_size=8,  # 4090 Int4可设8，显存足够
-    gradient_accumulation_steps=1,
-    learning_rate=1.5e-4,  # 针对7B-Int4优化的学习率
-    fp16=True,  # 必须开启，降显存
-    logging_steps=5,  # 每5步打印一次loss，方便监控
-    save_steps=100,  # 每100步保存一次
-    save_total_limit=2,  # 只保留最新2个模型，节省空间
-    report_to="tensorboard",  # 生成loss曲线
-    remove_unused_columns=False,  # 关键：保留所有字段，避免格式化函数报错
-    lr_scheduler_type="cosine",  # 余弦学习率，训练更稳定
-    warmup_ratio=0.05,  # 预热学习率，防止初期loss波动
-)
+    # === 关键修复：强制使用 float32，彻底禁用 bf16/fp16 自动行为 ===
+    model = AutoModelForCausalLM.from_pretrained(
+        LOCAL_MODEL_PATH,
+        trust_remote_code=True,
+        device_map="auto",
+        torch_dtype=torch.float32,  # 强制 float32
+    )
+    model.enable_input_require_grads()
 
-# 8. 初始化训练器
-trainer = SFTTrainer(
-    model=model,
-    train_dataset=dataset,
-    peft_config=peft_config,
-    dataset_text_field="text",  # 对应格式化后的字段
-    max_seq_length=512,  # 限制序列长度，4090单卡建议512
-    tokenizer=tokenizer,
-    args=training_args,
-    formatting_func=formatting_func,  # 应用数据格式化
-)
+    # === LoRA 配置 ===
+    peft_config = LoraConfig(
+        task_type=TaskType.CAUSAL_LM,
+        r=8,
+        lora_alpha=16,
+        lora_dropout=0.1,
+        target_modules=["c_attn", "c_proj", "w1", "w2"]
+    )
+    model = get_peft_model(model, peft_config)
+    model.print_trainable_parameters()
 
-# 9. 开始训练
-print("===== 开始微调 =====")
-trainer.train()
+    # === 加载数据 ===
+    data = []
+    with open(LOCAL_DATA_PATH, "r", encoding="utf-8") as f:
+        for i, line in enumerate(f):
+            if i >= args.num_samples:
+                break
+            item = json.loads(line.strip())
+            data.append({"input": item["input"], "target": item["target"]})
+    dataset = Dataset.from_list(data)
 
-# 10. 保存LoRA权重（仅几十MB，可下载到本地）
-trainer.model.save_pretrained(new_model)
-print(f"微调完成！LoRA权重保存在：{new_model}")
+    # === 预处理函数 ===
+    def preprocess(example):
+        input_text = f"<|im_start|>user\n{example['input']}<|im_end|>\n<|im_start|>assistant\n"
+        target_text = f"{example['target']}<|im_end|>"
+        full_text = input_text + target_text
+        tokenized = tokenizer(full_text, max_length=512, truncation=True, add_special_tokens=False)
+        input_ids = tokenized["input_ids"]
+        source_len = len(tokenizer(input_text, add_special_tokens=False)["input_ids"])
+        labels = [-100] * source_len + input_ids[source_len:]
+        return {
+            "input_ids": input_ids[:512],
+            "labels": labels[:512]
+        }
+
+    tokenized_ds = dataset.map(preprocess, remove_columns=dataset.column_names)
+
+    # === 训练参数：全程 float32（fp16=False），避免 4090 上的 bfloat16 陷阱 ===
+    training_args = TrainingArguments(
+        output_dir=args.output_dir,
+        per_device_train_batch_size=4,
+        gradient_accumulation_steps=2,
+        learning_rate=2e-4,
+        num_train_epochs=2,
+        logging_steps=10,
+        save_strategy="epoch",
+        fp16=False,      # ← 关键：关闭 fp16（4090 不需要，且可避免 dtype 混乱）
+        bf16=False,      # 显式关闭
+        gradient_checkpointing=True,
+        remove_unused_columns=False,
+        report_to="none",
+        dataloader_num_workers=0,
+        optim="adamw_torch",
+        lr_scheduler_type="cosine",
+        warmup_ratio=0.03,
+        max_grad_norm=1.0,
+        # 可选：如果你后续想用 TensorBoard，可设 report_to="tensorboard"
+    )
+
+    data_collator = DataCollatorForSeq2Seq(
+        tokenizer,
+        padding=True,
+        max_length=512,
+        pad_to_multiple_of=8,
+        return_tensors="pt"
+    )
+
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=tokenized_ds,
+        data_collator=data_collator,
+    )
+
+    print(f"🚀 开始训练（{args.num_samples} samples）...")
+    trainer.train()
+
+    model.save_pretrained(args.output_dir)
+    tokenizer.save_pretrained(args.output_dir)
+    print(f"🎉 训练完成！模型已保存至: {args.output_dir}")
+
+if __name__ == "__main__":
+    main()
