@@ -1,0 +1,37 @@
+
+Python快速参考卡片（Java开发者版）
+
+变量定义：
+  Java: int x = 10;
+  Python: x = 10
+
+条件语句：
+  Java: if (x > 0) { ... } else if (x < 0) { ... } else { ... }
+  Python: if x > 0: ... elif x < 0: ... else: ...
+
+循环：
+  Java: for (int i = 0; i < 10; i++) { ... }
+  Python: for i in range(10): ...
+
+  Java: for (String s : list) { ... }
+  Python: for s in list: ...
+
+函数定义：
+  Java: public int add(int a, int b) { return a + b; }
+  Python: def add(a, b): return a + b
+
+类定义：
+  Java: class Person { private String name; public Person(String name) {...} }
+  Python: class Person: def __init__(self, name): self.name = name
+
+异常处理：
+  Java: try {...} catch (Exception e) {...} finally {...}
+  Python: try: ... except Exception as e: ... finally: ...
+
+列表操作：
+  Java: list.add(1); list.get(0); list.size();
+  Python: list.append(1); list[0]; len(list)
+
+字典操作：
+  Java: map.put("key", "value"); map.get("key"); map.containsKey("key");
+  Python: dict["key"] = "value"; dict["key"]; "key" in dict
