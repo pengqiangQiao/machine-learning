@@ -37,25 +37,29 @@ head firefly-train-1.1M.jsonl
 
 
 
-echo "=== GPU Info ==="
-nvidia-smi --query-gpu=name,memory.total --format=csv
+你好！我正在 RTX 4090 单卡 上微调 Qwen-1.8B-Chat（ModelScope 版），为确保训练脚本 100% 安全且适配我的本地路径，我按以下步骤提供信息：
 
-echo -e "\n=== PyTorch & CUDA ==="
-python -c "import torch; print(f'torch {torch.__version__}, CUDA {torch.version.cuda}, available: {torch.cuda.is_available()}')"
+📁【关键路径】
+- 模型本地路径：/root/.cache/modelscope/hub/models/Qwen/Qwen-1_8B-Chat
+- 数据集本地路径：/data/my_finetune_data/train.jsonl
 
-echo -e "\n=== Key Libraries ==="
-pip list | grep -E "transformers|peft|accelerate|datasets|modelscope" | sort
+1️⃣ 【环境检查结果】
+（粘贴 collect_env.sh 的输出）
 
-echo -e "\n=== Model Cache Paths ==="
-if [ -d ～/.cache/modelscope/hub ]; then
-    echo "ModelScope cache exists (likely using魔搭 models)"
-    ls ～/.cache/modelscope/hub/ | head -n 3
-fi
-if [ -d ～/.cache/huggingface/hub ]; then
-    echo "HuggingFace cache exists"
-    ls ～/.cache/huggingface/hub/ | head -n 3
-fi
+（粘贴 env_check.py 的输出）
 
-echo -e "\n=== Data Sample (please provide manually) ==="
-echo "👉 请手动贴 1-2 行你的 JSONL 数据，例如："
-echo '{"input": "...", "target": "..."}'
+2️⃣ 【检查器代码】
+这是我准备使用的配置检查脚本 check_training_config.py：
+（粘贴 check_training_config.py 的完整代码）
+
+3️⃣ 【数据样例】
+我的数据格式如下（JSONL，每行一个样本）：
+{"input": "中国的首都是哪里？", "target": "中国的首都是北京。"}
+{"instruction": "写一首诗", "input": "", "output": "春风又绿江南岸..."}
+
+4️⃣ 【请求】
+请根据以上信息：
+- 告诉我应该如何运行 check_training_config.py（即完整的命令行）
+- 后续我会运行它并反馈结果，再请你生成最终的微调训练脚本（需正确加载上述模型和数据路径）
+
+谢谢！
