@@ -80,9 +80,14 @@ def setup_chinese_font(verbose=True):
     font_set = False
     for font in fonts:
         try:
-            # 设置全局字体
-            plt.rcParams['font.sans-serif'] = [font]
+            # 设置全局字体，添加支持数学符号的字体作为后备
+            # DejaVu Sans 和 STIXGeneral 支持数学符号如 ∇
+            plt.rcParams['font.sans-serif'] = [font, 'DejaVu Sans', 'STIXGeneral', 'Arial Unicode MS']
             plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+            
+            # 设置数学文本字体，确保数学符号正确显示
+            plt.rcParams['mathtext.fontset'] = 'stix'  # 使用 STIX 字体集显示数学符号
+            plt.rcParams['mathtext.default'] = 'regular'
             
             # 测试字体是否可用（简单测试，不创建图形）
             try:
