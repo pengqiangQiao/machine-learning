@@ -32,9 +32,22 @@ git lfs pull
 wc -l firefly-train-1.1M.jsonl   # 应该有约 110 万行
 head firefly-train-1.1M.jsonl 
 
+检查Xinference、vLLM、PyTorch 和 CUDA 驱动版本：
 
+======================================================================
+# 1. 查询 Xinference 精确版本
+pip show xinference | grep Version
 
+# 2. 查询 vLLM 版本
+pip show vllm | grep Version
 
+# 3. 查询 PyTorch 版本（含 CUDA 信息）
+python -c "import torch; print(torch.__version__); print(torch.version.cuda)"
+
+# 4. 确认系统 CUDA 驱动版本
+nvidia-smi | grep CUDA
+
+=====================================================================================
 
 
 你好！我正在 RTX 4090 单卡 上微调 Qwen-1.8B-Chat（ModelScope 版），为确保训练脚本 100% 安全且适配我的本地路径，我按以下步骤提供信息：
@@ -63,3 +76,19 @@ head firefly-train-1.1M.jsonl
 - 后续我会运行它并反馈结果，再请你生成最终的微调训练脚本（需正确加载上述模型和数据路径）
 
 谢谢！
+
+
+================================================================================
+
+
+部署任何模型,遵守规范 
+
+1.永远不装最新版，只装 “验证过的稳定版”
+2.所有依赖写死版本号，绝不依赖默认范围，比如：
+pip install \
+  "xinference[vllm,embedding,rerank,transformers]==1.17.0" \
+  "vllm==0.14.0" \  # 显式指定 vLLM 版本，覆盖默认依赖
+  --extra-index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+  --force-reinstall  # 强制重装，确保版本准确（可选，避免缓存干扰）
+3.CUDA、PyTorch、vLLM、Xinference 必须成套匹配
+4.出问题先回滚版本，不浪费时间调试最新版
