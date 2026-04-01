@@ -1,0 +1,8 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "my_agent": "./sgg/langgraph/06_specialApi/CommandDemo.py:graph",
+    "music_agent": "./sgg/langgraph/09_music/MusicLangGraphDemo.py:graph"
+  },
+  "env": ".env"
+}
